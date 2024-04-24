@@ -1,0 +1,36 @@
+.previev{
+    width: 500px;
+    float: left;
+}
+.box{
+    margin-top: 20vh;
+    height: 100vh;
+    width: 60%;
+    background-color: beige;
+    overflow: hidden;
+}
+.box > *{
+    color: black;
+}
+.nazwa{
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center
+}
+.opcje{
+    display: flex;
+    justify-content: right;
+    align-items: end;
+    flex-direction: column;
+    padding-right: 5%;
+}
+.wraper{
+    height: 500px;
+}
+.top{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}

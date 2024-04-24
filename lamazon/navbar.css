@@ -1,0 +1,18 @@
+*{
+    text-decoration: none;
+}
+.user{
+    height: 100px;
+    width: 100px;
+    padding: 50px;
+}
+.cart{
+    height: 100px;
+    width: 100px;
+    padding: 50px;
+    float: right;
+}
+.top{
+    position: sticky;
+    top: 0;
+}
