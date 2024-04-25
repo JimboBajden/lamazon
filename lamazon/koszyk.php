@@ -41,7 +41,10 @@
     }
     $zapytane = $connect->query($sql);
 
-
+    if(isset($_GET["zmien"])){
+        $index = array_search($_GET["id"],$tab);
+        $_SESSION["koszyk"][$index][1] = $_GET["ilosc"];
+    }
     #print_r($_SESSION);
     ?>
     <div class="top">
@@ -64,11 +67,12 @@
                     <img class ='imgery' src='imgs/{$tmp}' alt=''>
                     <div class='elements'>{$row["nazwa"]}</div>
                     <input name='ilosc' type='number'min='1' max ='{$row["ilosc"]}' step='1' value='{$ilosc}'>
-                    <input name='usun' type='submit'>
+                    <input type='hidden' name='id' value='{$row["produkt_id"]}'>
+                    <input name='zmien' value='=' type='submit'>
                         </form>";  
                     echo "<form>";
                     echo "<input type='hidden' name='produkt_id' value='{$row["produkt_id"]}'>";
-                    echo "<input name='usun' value='usun' type='submit'>";  
+                    echo "<input name='usun' value='usun'  type='submit'>";  
                     echo "</form>";
                 }
                 ?>
