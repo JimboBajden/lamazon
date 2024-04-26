@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 24 Kwi 2024, 20:35
+-- Czas generowania: 26 Kwi 2024, 12:32
 -- Wersja serwera: 10.4.25-MariaDB
 -- Wersja PHP: 8.1.10
 
@@ -37,8 +37,7 @@ CREATE TABLE `img` (
 --
 
 INSERT INTO `img` (`img_id`, `url`) VALUES
-(1, 'krzesło_drewniane.jpg'),
-(2, 'dom_kategoria.jpg');
+(1, 'images.png');
 
 -- --------------------------------------------------------
 
@@ -57,7 +56,9 @@ CREATE TABLE `kategoria` (
 --
 
 INSERT INTO `kategoria` (`kategoria_id`, `nazwa`, `img_id`) VALUES
-(1, 'dom', 2);
+(1, 'kategoria1', 1),
+(2, 'kategoria2', 1),
+(3, 'kategoria3', NULL);
 
 -- --------------------------------------------------------
 
@@ -78,8 +79,9 @@ CREATE TABLE `konta` (
 --
 
 INSERT INTO `konta` (`konto_id`, `nazwa`, `email`, `haslo`, `admin`) VALUES
-(1, 'greg', 'g@mail.com', '123', 0),
-(10, 'jhon', '', '', 0);
+(1, 'greg', 'g@mail.com', '123', 1),
+(2, 'jhon', 'g@mail.com', '123', 0),
+(8, 'szcur', '', '', 0);
 
 -- --------------------------------------------------------
 
@@ -98,8 +100,8 @@ CREATE TABLE `koszyk` (
 --
 
 INSERT INTO `koszyk` (`ilosc`, `konto_id`, `produkt_id`) VALUES
-(5, 10, 1),
-(2, 10, 2);
+(8, 2, 1),
+(3, 2, 3);
 
 -- --------------------------------------------------------
 
@@ -110,7 +112,7 @@ INSERT INTO `koszyk` (`ilosc`, `konto_id`, `produkt_id`) VALUES
 CREATE TABLE `produkt` (
   `produkt_id` int(11) NOT NULL,
   `nazwa` varchar(100) NOT NULL,
-  `cena` decimal(12,2) NOT NULL,
+  `cena` decimal(10,0) NOT NULL,
   `ilosc` int(11) NOT NULL,
   `img_id` int(11) DEFAULT NULL,
   `promocja` decimal(5,0) DEFAULT NULL,
@@ -123,8 +125,9 @@ CREATE TABLE `produkt` (
 --
 
 INSERT INTO `produkt` (`produkt_id`, `nazwa`, `cena`, `ilosc`, `img_id`, `promocja`, `opis`, `kategoria_id`) VALUES
-(1, 'krzesło drewniane ', '2137.00', 12, 1, NULL, 'krzesło które jest zrobione z drewna', 1),
-(2, 'testowy produkt', '12.35', 15, NULL, NULL, 'produkt do testó', 1);
+(1, 'produkt1', '21', 12, 1, NULL, 'to jest produkt który robi rzeczy', 1),
+(2, 'produkt2', '0', 21, NULL, NULL, 'g', 2),
+(3, 'produkt3', '2', 12, NULL, NULL, '123', 1);
 
 -- --------------------------------------------------------
 
@@ -136,16 +139,10 @@ CREATE TABLE `zamuwienia` (
   `zamuwienie_id` int(11) NOT NULL,
   `produkt_id` int(11) NOT NULL,
   `ilosc` int(11) NOT NULL,
-  `konto_id` int(11) NOT NULL
+  `konto_id` int(11) NOT NULL,
+  `klucz` int(11) NOT NULL,
+  `metoda` enum('przelew','karta') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Zrzut danych tabeli `zamuwienia`
---
-
-INSERT INTO `zamuwienia` (`zamuwienie_id`, `produkt_id`, `ilosc`, `konto_id`) VALUES
-(1, 1, 5, 1),
-(1, 2, 2, 1);
 
 --
 -- Indeksy dla zrzutów tabel
@@ -189,7 +186,7 @@ ALTER TABLE `produkt`
 -- Indeksy dla tabeli `zamuwienia`
 --
 ALTER TABLE `zamuwienia`
-  ADD KEY `produkt_id` (`produkt_id`,`konto_id`),
+  ADD PRIMARY KEY (`klucz`),
   ADD KEY `konto_id` (`konto_id`);
 
 --
@@ -200,25 +197,31 @@ ALTER TABLE `zamuwienia`
 -- AUTO_INCREMENT dla tabeli `img`
 --
 ALTER TABLE `img`
-  MODIFY `img_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `img_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT dla tabeli `kategoria`
 --
 ALTER TABLE `kategoria`
-  MODIFY `kategoria_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `kategoria_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT dla tabeli `konta`
 --
 ALTER TABLE `konta`
-  MODIFY `konto_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `konto_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT dla tabeli `produkt`
 --
 ALTER TABLE `produkt`
-  MODIFY `produkt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `produkt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT dla tabeli `zamuwienia`
+--
+ALTER TABLE `zamuwienia`
+  MODIFY `klucz` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Ograniczenia dla zrzutów tabel
@@ -248,8 +251,7 @@ ALTER TABLE `produkt`
 -- Ograniczenia dla tabeli `zamuwienia`
 --
 ALTER TABLE `zamuwienia`
-  ADD CONSTRAINT `zamuwienia_ibfk_1` FOREIGN KEY (`produkt_id`) REFERENCES `produkt` (`produkt_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `zamuwienia_ibfk_2` FOREIGN KEY (`konto_id`) REFERENCES `konta` (`konto_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `zamuwienia_ibfk_1` FOREIGN KEY (`konto_id`) REFERENCES `konta` (`konto_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
