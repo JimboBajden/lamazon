@@ -17,13 +17,21 @@
         #print_r($tab);
         $max = "SELECT MAX(zamuwienie_id) as max FROM zamuwienia ";
         $wynik = $connect->query($max)->fetch_assoc();
-        if($wynik["max"] == null){$wynik["max"]=1;}
+        if($wynik["max"] == null)
+        {
+            $wynik["max"]=1;
+        }
+        else
+        {
+            $wynik["max"] = $wynik["max"]+1;
+        }
         print_r($wynik);
         foreach($tab as $elements){
             $sql = "INSERT INTO `zamuwienia` (`zamuwienie_id`, `produkt_id`, `ilosc`, `konto_id`) VALUES ('{$wynik["max"]}','{$elements[0]}','{$elements[1]}' ,'1');";    
             #echo $sql , "<br>";
             $connect->query($sql);
         }
+        $_SESSION["koszyk"]= array();
     ?>
 </div>
 </body>

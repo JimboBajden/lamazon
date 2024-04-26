@@ -66,12 +66,14 @@
                 $i++;
             }
             $_SESSION["koszyk"] = $tablica;
-            print_r($_SESSION);
-            if($row["admin"] == true){
+            
+            $zapytanie = "SELECT * FROM `konta` where konto_id = {$_SESSION["user"]} ";
+            $check = $connect->query($zapytanie)->fetch_assoc();
+            if( $check["admin"] == true){
                 header('Location: admin.php');
             }
             else{
-            header('Location: landing_page.php');
+                header('Location: landing_page.php');
             }
     }
     ?>
