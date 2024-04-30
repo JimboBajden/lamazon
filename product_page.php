@@ -54,7 +54,25 @@
                     echo "<h1 class='nazwa'>{$row["nazwa"]}</h1>";
                 ?>
                     <div class="opcje">
-                        <h1><?php echo $row["cena"] ?> zł</h1>
+                        <div>
+                            <?php
+                                if(!is_null($row["promocja"])){
+                                    $promocja = $row["cena"]-(($row["promocja"]/100)*$row["cena"]);
+                                    number_format($promocja,2);
+                                    echo "<h1 class='nowa'>{$promocja} </h1>";
+                                    echo "<h2 class='stara'>{$row["cena"]} zł</h2>";
+                                }
+                            ?>
+                            <style>
+                                .stara{
+                                    text-decoration: line-through;
+                                }
+                                .nowa{
+                                    color: red;
+                                    
+                                }
+                            </style>
+                        </div>
                         <form action="" method="post">
                             <input type="hidden" name="id" value=" <?php echo $row["produkt_id"] ?>">
                             <input type="number" name="ilosc" min="1" value="1" max = <?php echo $row["ilosc"]; ?>>
