@@ -61,6 +61,8 @@
                                     number_format($promocja,2);
                                     echo "<h1 class='nowa'>{$promocja} </h1>";
                                     echo "<h2 class='stara'>{$row["cena"]} zł</h2>";
+                                }else{
+                                    echo "<h1 class='stara'>{$row["cena"]} zł</h1>";
                                 }
                             ?>
                             <style>
@@ -69,7 +71,7 @@
                                 }
                                 .nowa{
                                     color: red;
-                                    
+
                                 }
                             </style>
                         </div>
