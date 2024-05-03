@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 03 Maj 2024, 19:09
+-- Czas generowania: 03 Maj 2024, 20:35
 -- Wersja serwera: 10.4.25-MariaDB
 -- Wersja PHP: 8.1.10
 
@@ -116,7 +116,7 @@ CREATE TABLE `produkt` (
   `produkt_id` int(11) NOT NULL,
   `nazwa` varchar(100) NOT NULL,
   `cena` decimal(12,2) NOT NULL,
-  `cala_cena` decimal(11,0) NOT NULL,
+  `cala_cena` decimal(15,2) NOT NULL,
   `ilosc` int(11) NOT NULL,
   `img_id` int(11) DEFAULT NULL,
   `promocja` decimal(5,0) DEFAULT NULL,
@@ -129,15 +129,15 @@ CREATE TABLE `produkt` (
 --
 
 INSERT INTO `produkt` (`produkt_id`, `nazwa`, `cena`, `cala_cena`, `ilosc`, `img_id`, `promocja`, `opis`, `kategoria_id`) VALUES
-(1, 'krzesło drewniane ', '2137.00', '1816', 12, 1, '15', 'krzesło które jest zrobione z drewna', 1),
-(2, 'testowy produkt', '12.35', '0', 15, NULL, NULL, 'produkt do testó', 1);
+(1, 'krzesło drewniane ', '2137.00', '1816.00', 12, 1, '15', 'krzesło które jest zrobione z drewna', 1),
+(2, 'testowy produkt', '14.25', '14.25', 15, NULL, '0', 'produkt do testó', 1);
 
 --
 -- Wyzwalacze `produkt`
 --
 DELIMITER $$
 CREATE TRIGGER `cena i promocja` BEFORE UPDATE ON `produkt` FOR EACH ROW BEGIN
-IF new.promocja != 0 THEN SET new.cala_cena = new.cena - (new.promocja/100)*new.cena;
+IF (new.cena != old.cena) OR (new.promocja != old.promocja)THEN SET new.cala_cena = new.cena - ((new.promocja/100)*new.cena);
 END IF;
 END
 $$
