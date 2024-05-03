@@ -56,13 +56,12 @@
                     <div class="opcje">
                         <div>
                             <?php
-                                if(!is_null($row["promocja"])){
-                                    $promocja = $row["cena"]-(($row["promocja"]/100)*$row["cena"]);
-                                    number_format($promocja,2);
-                                    echo "<h1 class='nowa'>{$promocja} zł</h1>";
+                                if($row["promocja"] > 0){
+                                    number_format($row["cala_cena"],2);
+                                    echo "<h1 class='nowa'>{$row["cala_cena"]} zł</h1>";
                                     echo "<h2 class='stara'>{$row["cena"]} zł</h2>";
                                 }else{
-                                    echo "<h1 class='stara'>{$row["cena"]} zł</h1>";
+                                    echo "<h1 >{$row["cena"]} zł</h1>";
                                 }
                             ?>
                             <style>

@@ -85,12 +85,12 @@
                 $zapytane2 = $connect->query($sql);
                  while($greg=$zapytane2->fetch_assoc()){
                     if($greg["ilosc"] == 1){
-                        echo "<div>{$greg["cena"]}zł</div>"; 
+                        echo "<div>{$greg["cala_cena"]}zł</div>"; 
                     $suma += $greg["cena"];
                     }else{
                         $tmp = $_SESSION["koszyk"][$i][1];$i++;
-                        echo "<div>{$greg["cena"]}zł x {$tmp}</div>"; 
-                        $suma += ($greg["cena"] * $tmp);
+                        echo "<div>{$greg["cala_cena"]}zł x {$tmp}</div>"; 
+                        $suma += ($greg["cala_cena"] * $tmp);
                     }
                     
                 }   
