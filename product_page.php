@@ -59,7 +59,7 @@
                                 if(!is_null($row["promocja"])){
                                     $promocja = $row["cena"]-(($row["promocja"]/100)*$row["cena"]);
                                     number_format($promocja,2);
-                                    echo "<h1 class='nowa'>{$promocja} </h1>";
+                                    echo "<h1 class='nowa'>{$promocja} zł</h1>";
                                     echo "<h2 class='stara'>{$row["cena"]} zł</h2>";
                                 }else{
                                     echo "<h1 class='stara'>{$row["cena"]} zł</h1>";
