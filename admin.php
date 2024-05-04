@@ -13,6 +13,11 @@
     <?php        
         session_start();
         $connect=@new mysqli('localhost','root','','lamazon');
+        $czyAdmin = "SELECT admin FROM konta where konto_id = {$_SESSION["user"]}";
+        $check = $connect->query($czyAdmin)->fetch_assoc();
+        if($check["admin"] == 0){
+            header('Location: landing_page.php');
+        }
         print_r($_SESSION);
         if(isset($_GET["wyloguj"])){
             unset($_SESSION["user"]);
@@ -113,6 +118,10 @@ if(isset($_POST["submit"])) {
 ?>
 <?php
     if(isset($_GET["uimg"])){
+        $query = "SELECT url FROM img WHERE img_id = '{$_GET["uimg"]}'";
+        $file_name = $connect->query($query)->fetch_assoc();
+        $file_path = 'imgs/'.$file_name["url"];
+        unlink($file_path);
         $usuwanieI = "DELETE FROM `img` WHERE `img`.`img_id` = '{$_GET["uimg"]}' ";
         $connect->query($usuwanieI);
     }
