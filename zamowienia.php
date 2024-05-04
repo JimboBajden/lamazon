@@ -14,7 +14,6 @@
         foreach($_SESSION["koszyk"] as $test){
             array_push($tab,$test);
         }
-        #print_r($tab);
         $max = "SELECT MAX(zamuwienie_id) as max FROM zamuwienia ";
         $wynik = $connect->query($max)->fetch_assoc();
         if($wynik["max"] == null)
@@ -27,11 +26,14 @@
         }
         print_r($wynik);
         foreach($tab as $elements){
-            $sql = "INSERT INTO `zamuwienia` (`zamuwienie_id`, `produkt_id`, `ilosc`, `konto_id`) VALUES ('{$wynik["max"]}','{$elements[0]}','{$elements[1]}' ,'1');";    
+            $sql = "INSERT INTO `zamuwienia` (`zamuwienie_id`, `produkt_id`, `ilosc`, `konto_id`) VALUES ('{$wynik["max"]}','{$elements[0]}','{$elements[1]}' ,'{$_SESSION["user"]}');";    
             #echo $sql , "<br>";
             $connect->query($sql);
         }
         $_SESSION["koszyk"]= array();
+        $usunKoszyk = "DELETE FROM koszyk WHERE konto_id = {$_SESSION["user"]}";
+        $connect->query($usunKoszyk);
+        header("Location:landing_page.php");
     ?>
 </div>
 </body>

@@ -98,7 +98,7 @@
                 echo"</div>";
                 echo "<h1>{$suma}zł</h1>";
                 ?>
-                <form action="zamowienia.php">
+                <form action="potwierdzenie_zakupu.php">
                     <?php
                     $produkty = implode(",",$tab);
                     echo "<input type='hidden' name='produkty' value='$produkty'>";

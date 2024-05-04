@@ -14,15 +14,17 @@
     <center>
     <div style="display:flex">
         <div class="karta">
-            <form action="" method="post">
+            <form action="zamowienia.php" method="post">
                 <p>podaj numer karty</p>
                 <input name="kartaNumer" type="number">
+                <input type="submit"> 
             </form>
         </div>
         <div class="przelew">
-            <form action="" method="post">
+            <form action="zamowienia.php" method="post">
                 <p>podaj dane konta</p>
-                <input name="kontoNumer" type="number">    
+                <input name="kontoNumer" type="number">  
+                <input type="submit">  
             </form>
         </div>
     </div>
