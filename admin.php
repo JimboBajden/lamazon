@@ -43,9 +43,27 @@
     <?php 
     #ilosc
         if(isset($_POST["zprodukt"])){
-            $update = "UPDATE `produkt` SET `ilosc` = {$_POST["ilosc"]} WHERE `produkt`.`produkt_id` = {$_POST["zprodukt"]} ";
-            echo $update;
-            $connect->query($update);
+            if($_POST["ilosc"]!= ""){
+                $update = "UPDATE `produkt` SET `ilosc` = {$_POST["ilosc"]} WHERE `produkt`.`produkt_id` = {$_POST["zprodukt"]} ";
+                $connect->query($update);
+            }
+            if($_POST["promocja"]!= ""){
+                echo"sperma";
+                $update = "UPDATE `produkt` SET `promocja` = {$_POST["promocja"]} WHERE `produkt`.`produkt_id` = {$_POST["zprodukt"]} ";
+                $connect->query($update);
+            }
+            if($_POST["nazwa"]!= ""){
+                $update = "UPDATE `produkt` SET `nazwa` = {$_POST["nazwa"]} WHERE `produkt`.`produkt_id` = {$_POST["zprodukt"]} ";
+                $connect->query($update);
+            }
+            if($_POST["cena"]!= ""){
+                $update = "UPDATE `produkt` SET `cena` = {$_POST["cena"]} WHERE `produkt`.`produkt_id` = {$_POST["zprodukt"]} ";
+                $connect->query($update);
+            }
+            if($_POST["opis"] != ""){
+                $update = "UPDATE `produkt` SET `opis` = '{$_POST["opis"]}' WHERE `produkt`.`produkt_id` = {$_POST["zprodukt"]} ";
+                $connect->query($update);
+            }
         }
     ?>
      
@@ -76,11 +94,6 @@ if(isset($_POST["submit"])) {
         $uploadOk = 0;
     }
 
-    // Check file size
-    if ($_FILES["fileToUpload"]["size"] > 500000) {
-        echo "Sorry, your file is too large.";
-        $uploadOk = 0;
-    }
 
     // Allow certain file formats
     if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
@@ -172,7 +185,7 @@ if(isset($_POST["submit"])) {
                 <input type="submit">
             </form>
             <form method="post">
-                <h1>zmień ilosc produktu</h1>
+                <h1>zmień wartości produktu</h1>
                 <select name="zprodukt" id="">
                     <?php
                     $zapytanie1 = "SELECT * FROM `kategoria`";
@@ -189,7 +202,11 @@ if(isset($_POST["submit"])) {
                     }
                     ?>
                 </select>
-                <input type="text" name="ilosc" placeholder="nowa ilosc">
+                <input type="number" name="ilosc" placeholder="nowa ilosc">
+                <input type="number" name="promocja" placeholder="promocja">
+                <input type="text" name="nazwa" placeholder="zmień nazwe">
+                <input type="number" name="cena" placeholder="zmień cene">
+                <input type="text" name="opis" placeholder="zmień opis">
                 <input type="submit">
             </form>
             <form action="" method="post" enctype="multipart/form-data">
