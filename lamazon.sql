@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 03 Maj 2024, 20:35
+-- Czas generowania: 16 Maj 2024, 21:12
 -- Wersja serwera: 10.4.25-MariaDB
 -- Wersja PHP: 8.1.10
 
@@ -37,8 +37,10 @@ CREATE TABLE `img` (
 --
 
 INSERT INTO `img` (`img_id`, `url`) VALUES
-(1, 'krzesło_drewniane.jpg'),
-(2, 'dom_kategoria.jpg');
+(2, 'dom_kategoria.jpg'),
+(5, 'temp_img.jpg\r\n'),
+(6, 'krzesło_drewniane.jpg'),
+(7, 'dom_kategoria.jpg');
 
 -- --------------------------------------------------------
 
@@ -78,7 +80,7 @@ CREATE TABLE `konta` (
 --
 
 INSERT INTO `konta` (`konto_id`, `nazwa`, `email`, `haslo`, `admin`) VALUES
-(1, 'greg', 'g@mail.com', '123', 0),
+(1, 'greg', 'g@mail.com', '123', 1),
 (10, 'jhon', '', '', 0),
 (11, '', '', '', 0),
 (12, 'lebron', 'lebnron@mail.com', '123', 0),
@@ -94,17 +96,17 @@ INSERT INTO `konta` (`konto_id`, `nazwa`, `email`, `haslo`, `admin`) VALUES
 CREATE TABLE `koszyk` (
   `ilosc` int(11) NOT NULL,
   `konto_id` int(11) NOT NULL,
-  `produkt_id` int(11) NOT NULL
+  `produkt_id` int(11) NOT NULL,
+  `main` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Zrzut danych tabeli `koszyk`
 --
 
-INSERT INTO `koszyk` (`ilosc`, `konto_id`, `produkt_id`) VALUES
-(5, 10, 1),
-(2, 10, 2),
-(2, 1, 1);
+INSERT INTO `koszyk` (`ilosc`, `konto_id`, `produkt_id`, `main`) VALUES
+(2, 10, 2, 2),
+(1, 1, 2, 7);
 
 -- --------------------------------------------------------
 
@@ -129,8 +131,8 @@ CREATE TABLE `produkt` (
 --
 
 INSERT INTO `produkt` (`produkt_id`, `nazwa`, `cena`, `cala_cena`, `ilosc`, `img_id`, `promocja`, `opis`, `kategoria_id`) VALUES
-(1, 'krzesło drewniane ', '2137.00', '1816.00', 12, 1, '15', 'krzesło które jest zrobione z drewna', 1),
-(2, 'testowy produkt', '14.25', '14.25', 15, NULL, '0', 'produkt do testó', 1);
+(2, 'testowy produkt', '15.20', '13.68', 20, NULL, '10', 'spunk', 1),
+(4, 'krzesło drewniane', '2137.00', '0.00', 21, 6, NULL, 'to jest krzesło zrobione z drewna', 1);
 
 --
 -- Wyzwalacze `produkt`
@@ -153,16 +155,18 @@ CREATE TABLE `zamuwienia` (
   `zamuwienie_id` int(11) NOT NULL,
   `produkt_id` int(11) NOT NULL,
   `ilosc` int(11) NOT NULL,
-  `konto_id` int(11) NOT NULL
+  `konto_id` int(11) NOT NULL,
+  `main` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Zrzut danych tabeli `zamuwienia`
 --
 
-INSERT INTO `zamuwienia` (`zamuwienie_id`, `produkt_id`, `ilosc`, `konto_id`) VALUES
-(1, 1, 5, 1),
-(1, 2, 2, 1);
+INSERT INTO `zamuwienia` (`zamuwienie_id`, `produkt_id`, `ilosc`, `konto_id`, `main`) VALUES
+(1, 2, 2, 1, 2),
+(2, 2, 1, 1, 4),
+(3, 2, 2, 1, 6);
 
 --
 -- Indeksy dla zrzutów tabel
@@ -191,6 +195,7 @@ ALTER TABLE `konta`
 -- Indeksy dla tabeli `koszyk`
 --
 ALTER TABLE `koszyk`
+  ADD PRIMARY KEY (`main`),
   ADD KEY `konto_id` (`konto_id`),
   ADD KEY `produkt_id` (`produkt_id`);
 
@@ -206,6 +211,7 @@ ALTER TABLE `produkt`
 -- Indeksy dla tabeli `zamuwienia`
 --
 ALTER TABLE `zamuwienia`
+  ADD PRIMARY KEY (`main`),
   ADD KEY `produkt_id` (`produkt_id`,`konto_id`),
   ADD KEY `konto_id` (`konto_id`);
 
@@ -217,7 +223,7 @@ ALTER TABLE `zamuwienia`
 -- AUTO_INCREMENT dla tabeli `img`
 --
 ALTER TABLE `img`
-  MODIFY `img_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `img_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT dla tabeli `kategoria`
@@ -232,10 +238,22 @@ ALTER TABLE `konta`
   MODIFY `konto_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
+-- AUTO_INCREMENT dla tabeli `koszyk`
+--
+ALTER TABLE `koszyk`
+  MODIFY `main` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT dla tabeli `produkt`
 --
 ALTER TABLE `produkt`
-  MODIFY `produkt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `produkt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT dla tabeli `zamuwienia`
+--
+ALTER TABLE `zamuwienia`
+  MODIFY `main` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Ograniczenia dla zrzutów tabel
@@ -245,7 +263,7 @@ ALTER TABLE `produkt`
 -- Ograniczenia dla tabeli `kategoria`
 --
 ALTER TABLE `kategoria`
-  ADD CONSTRAINT `kategoria_ibfk_1` FOREIGN KEY (`img_id`) REFERENCES `img` (`img_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `kategoria_ibfk_1` FOREIGN KEY (`img_id`) REFERENCES `img` (`img_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Ograniczenia dla tabeli `koszyk`
@@ -259,7 +277,7 @@ ALTER TABLE `koszyk`
 --
 ALTER TABLE `produkt`
   ADD CONSTRAINT `produkt_ibfk_1` FOREIGN KEY (`kategoria_id`) REFERENCES `kategoria` (`kategoria_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `produkt_ibfk_2` FOREIGN KEY (`img_id`) REFERENCES `img` (`img_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `produkt_ibfk_2` FOREIGN KEY (`img_id`) REFERENCES `img` (`img_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Ograniczenia dla tabeli `zamuwienia`
