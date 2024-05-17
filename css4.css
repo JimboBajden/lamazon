@@ -1,0 +1,10 @@
+.nwm{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+.nwm>a{
+    width: 50%;
+    text-align: center;
+    font-size: xx-large;
+}

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="css4.css">
 </head>
 <body>
     <?php
@@ -11,23 +12,11 @@
         $connect=@new mysqli('localhost','root','','lamazon');
     ?>  
     <center><h1>wybierz metode płatności</h1></center>
-    <center>
-    <div style="display:flex">
-        <div class="karta">
-            <form action="zamowienia.php" method="post">
-                <p>podaj numer karty</p>
-                <input name="kartaNumer" type="number">
-                <input type="submit"> 
-            </form>
-        </div>
-        <div class="przelew">
-            <form action="zamowienia.php" method="post">
-                <p>podaj dane konta</p>
-                <input name="kontoNumer" type="number">  
-                <input type="submit">  
-            </form>
-        </div>
+    <div class="nwm">
+        <a href="zamowienia.php?metoda=przelew">Przelew</a>
+        <a href="zamowienia.php?metoda=karta">Kartą</a>
     </div>
-    </center>
+
+    
 </body>
 </html>

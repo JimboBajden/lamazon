@@ -203,9 +203,9 @@ if(isset($_POST["submit"])) {
                     ?>
                 </select>
                 <input type="number" name="ilosc" placeholder="nowa ilosc">
-                <input type="number" name="promocja" placeholder="promocja">
+                <input type="number" name="promocja" step="0.01" placeholder="promocja">
                 <input type="text" name="nazwa" placeholder="zmień nazwe">
-                <input type="number" name="cena" placeholder="zmień cene">
+                <input type="number" name="cena" step="0.01" placeholder="zmień cene">
                 <input type="text" name="opis" placeholder="zmień opis">
                 <input type="submit">
             </form>
