@@ -11,19 +11,37 @@
         $connect=@new mysqli('localhost','root','','lamazon');
         $_SESSION["metoda"]=$_GET["metoda"];
         $max=null;$tab = array();
+        //array_push($_SESSION["koszyk"],array(1,5));
+        //print_r($_SESSION["koszyk"]);
         if(isset($_SESSION["user"],$_POST["imie"],$_POST["adres"],$_SESSION["metoda"],$_POST["metoda_dostawy"])){
-            //$sql = "INSERT INTO `zamuwienie` (`konto_id`, `imie`, `adres`, `metoda_platnosci`, `metoda_dostawy`) VALUES ('{$_SESSION["user"]}', '{$_POST["imie"]}', '{$_POST["adres"]}', '{$_SESSION["metoda"]}', '{$_POST["metoda_dostawy"]}'); ";
-            //$connect->query($sql);
-            $sql = "SELECT MAX(zamuwienie_id) as wynik FROM `zamuwienie`;";
-            $max = $connect->query($sql)->fetch_array();
-            //echo $max["wynik"];
-            foreach($_SESSION["koszyk"] as $test){
-            array_push($tab,$test);
-            }
-            foreach($tab as $produkt){
-                $sql = "INSERT INTO `zamuwienia` (`zaumienie_id`, `produkt_id`, `ilosc`) VALUES ('{$max["wynik"]}', '{$produkt[0]}', '{$produkt[1]}');";
+            $sql = "INSERT INTO `zamuwienie` (`konto_id`, `imie`, `adres`, `metoda_platnosci`, `metoda_dostawy`) VALUES ('{$_SESSION["user"]}', '{$_POST["imie"]}', '{$_POST["adres"]}', '{$_SESSION["metoda"]}', '{$_POST["metoda_dostawy"]}'); ";
+            $connect->query($sql);
+            $id = $connect->insert_id;
+            echo $id;
+            $newArray = array(); 
+
+           foreach($_SESSION["koszyk"] as $key => $test) {
+               $sql = "SELECT * FROM produkt WHERE produkt_id = {$test['0']}";
+               $tmp = $connect->query($sql)->fetch_assoc();
+           
+               if(!is_null($tmp)){
+                   $newArray[$key] = $test;  
+               }
+           }
+            $_SESSION["koszyk"] = $newArray;
+
+            print_r($_SESSION["koszyk"]);
+            foreach($_SESSION["koszyk"] as $produkt){
+                
+                $sql = "INSERT INTO `zamuwienia` (`zaumienie_id`, `produkt_id`, `ilosc`) VALUES ('{$id}', '{$produkt[0]}', '{$produkt[1]}');";
+                $connect->query($sql);
+                $sql = "UPDATE `produkt` SET `ilosc` = `ilosc` - '{$produkt[1]}' WHERE `produkt`.`produkt_id` = '{$produkt[0]}';";
                 $connect->query($sql);
             }
+            unset($_SESSION["koszyk"]);
+            unset($_SESSION["metoda"]);
+            header('Location: landing_page.php');
+            //erm what the sigma
         }
         //echo $_SESSION["metoda"];
         /*
