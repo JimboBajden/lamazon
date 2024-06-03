@@ -12,7 +12,15 @@
         $connect=@new mysqli('localhost','root','','lamazon');
         session_start();
         #print_r($_SESSION);
-        
+        /*
+        $zgred = password_hash("skibidi",PASSWORD_DEFAULT);
+        $test = "skibidii";
+        if (password_verify($test, $zgred)) {
+            echo 'Password is valid!';
+        } else {
+            echo 'Invalid password.';
+        }
+        */
         if(isset($_COOKIE["error"])){
             echo $_COOKIE["error"];
             unset($_COOKIE);

@@ -60,10 +60,13 @@
             $sql = "SELECT * FROM `zamuwienie`";    
         }
         $result=$connect->query($sql);
+       
         while($row = $result->fetch_assoc()){
             
-            echo "<form  class = 'elementy'> 
-                <div class='grid-container'>
+                
+            echo "<div class='grid-container'>
+                <form  class = 'elementy'> 
+                
                 <input type='hidden' name='id' value = '{$row["zamuwienie_id"]}'>
                 <span class='grid-item'>{$row["imie"]}</span>
                 <span class='grid-item'>{$row["adres"]} </span> 
@@ -77,17 +80,25 @@
             }else{
                 echo "<span class='grid-item'>dostarczone</span>";
             }
+            $sql = "SELECT SUM(produkt.cala_cena) AS wynik FROM `zamuwienia` JOIN produkt USING(produkt_id) WHERE zamuwienie_id =  {$row["zamuwienie_id"]} ";
+            $cena = $connect->query($sql)->fetch_assoc();
+            echo "<span class='grid-item'>cena: {$cena["wynik"]}</span>";
+            
+            echo"</form>";
 
-            echo"</div></form>";
+            echo "<form action='faktura.php'>
+                <input type='hidden' name='id' value = '{$row["zamuwienie_id"]}'>
+                <input type='submit' value = 'faktura'>
+            </form>
+            </div>";
         }
     ?>
     <style>
         .grid-container {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr); 
+            display: flex;
+            flex-direction: row;
             gap: 10px;
-            width: 80%;
-            max-width: 1000px;
+            width: 100%;
         }
 
         .grid-item {
@@ -97,6 +108,9 @@
             padding: 20px;
             font-size: 1.5em;
             border-radius: 5px;
+        }
+        .plz{
+            border: 1px solid black;
         }
     </style>
 </body>
