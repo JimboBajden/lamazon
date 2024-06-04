@@ -10,6 +10,9 @@
     <form action="" method="GET">
         <input name="wyloguj" value="wyloguj sie" type="submit">
     </form>
+    <form action="dostawa.php">
+        <input value="dostawy" type="submit">
+    </form>
     <?php        
         session_start();
         $connect=@new mysqli('localhost','root','','lamazon');

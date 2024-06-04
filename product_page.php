@@ -29,13 +29,10 @@
             $connect->query($dodawanie);
         }
         }
-        echo "greg0";
         if($_POST["ilosc"] != $_SESSION["koszyk"][array_search($_POST["id"],$produkty)][1]){
             $_SESSION["koszyk"][array_search($_POST["id"],$produkty)][1] = $_POST["ilosc"];
-            echo "greg";
         }
         }
-        print_r($_SESSION);
    
     ?>
     <div class="top">

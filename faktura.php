@@ -22,9 +22,9 @@
     <div class="tab">
         <?php
         $osoby = "SELECT * FROM `zamuwienie`";
-        $joe = $connect->query($osoby)->fetch_assoc();
-        echo "<p>nabywca:  <b>{$joe["imie"]}</b></p>    
-        <p>adres:  <b>{$joe["adres"]}</b></p>";
+        $wynik = $connect->query($osoby)->fetch_assoc();
+        echo "<p>nabywca:  <b>{$wynik["imie"]}</b></p>    
+        <p>adres:  <b>{$wynik["adres"]}</b></p>";
         ?>
     </div>
     <div id="dane">

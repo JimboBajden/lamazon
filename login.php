@@ -13,8 +13,7 @@
         session_start();
         #print_r($_SESSION);
         /*
-        $zgred = password_hash("skibidi",PASSWORD_DEFAULT);
-        $test = "skibidii";
+        $haslo = password_hash("skibidi",PASSWORD_DEFAULT);
         if (password_verify($test, $zgred)) {
             echo 'Password is valid!';
         } else {
@@ -39,6 +38,8 @@
             $check = $connect->query($zapytanie)->fetch_assoc();
             if($check["admin"] == true){
                 header('Location: admin.php');
+            }else{
+                header('Location: dostawa.php');
             }
         }
         
@@ -53,16 +54,19 @@
         $zapytanie = $connect->query($querry1);
         $testRows = $connect->query($querry1)->fetch_assoc();
         if(isset($_POST["register"])){
-            if(is_null($row["wynik"] == 0)){
-                $sql = "INSERT INTO `konta` (`nazwa`, `haslo`, `email`) VALUES ('{$_POST["name"]}', '{$_POST["password"]}', '{$_POST["email"]}')";
+            if($row["wynik"] == 0){
+                $haslo = password_hash($_POST["password"],PASSWORD_DEFAULT);
+                $sql = "INSERT INTO `konta` (`nazwa`, `haslo`, `email`) VALUES ('{$_POST["name"]}', '{$haslo}', '{$_POST["email"]}')";
                 $connect->query($sql);
+                $_SESSION["user"] = $connect->insert_id;
+                header('Location: landing_page.php');
             }else{
                 setcookie("error", "takie konto już istnieje", time() + 30 , "/");
                 header('Location: login.php');
             }
         } 
         if($row["wynik"] == 1 ){
-            if($_POST["name"] == $testRows["nazwa"] && $_POST["password"] == $testRows["haslo"] && $_POST["email"] == $testRows["email"]){
+            if($_POST["name"] == $testRows["nazwa"] && password_verify($_POST["password"],$testRows["haslo"]) && $_POST["email"] == $testRows["email"]){
                 $_SESSION["user"] = $testRows["konto_id"];
                 $doKoszyka = "SELECT * FROM `koszyk` WHERE konto_id = {$testRows["konto_id"]}";
                 $_SESSION["koszyk"] = array();            

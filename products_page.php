@@ -11,7 +11,6 @@
 <body>
     <?php 
     session_start();
-    print_r($_SESSION);
     ?>
     <div class="top">
         <a href="landing_page.php"><img class="logo" src="Lamazoon (1).png" alt="logo strony"></a>
