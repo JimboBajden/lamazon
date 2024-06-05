@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 03 Cze 2024, 21:26
+-- Czas generowania: 05 Cze 2024, 08:34
 -- Wersja serwera: 10.4.25-MariaDB
 -- Wersja PHP: 8.1.10
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Baza danych: `lamazon`
 --
+CREATE DATABASE IF NOT EXISTS `lamazon` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `lamazon`;
 
 -- --------------------------------------------------------
 
@@ -27,6 +29,7 @@ SET time_zone = "+00:00";
 -- Struktura tabeli dla tabeli `img`
 --
 
+DROP TABLE IF EXISTS `img`;
 CREATE TABLE `img` (
   `img_id` int(11) NOT NULL,
   `url` varchar(200) NOT NULL
@@ -48,6 +51,7 @@ INSERT INTO `img` (`img_id`, `url`) VALUES
 -- Struktura tabeli dla tabeli `kategoria`
 --
 
+DROP TABLE IF EXISTS `kategoria`;
 CREATE TABLE `kategoria` (
   `kategoria_id` int(11) NOT NULL,
   `nazwa` varchar(200) NOT NULL,
@@ -59,7 +63,9 @@ CREATE TABLE `kategoria` (
 --
 
 INSERT INTO `kategoria` (`kategoria_id`, `nazwa`, `img_id`) VALUES
-(1, 'dom', 2);
+(1, 'dom', 2),
+(2, 'ogród', NULL),
+(3, 'hobby', NULL);
 
 -- --------------------------------------------------------
 
@@ -67,6 +73,7 @@ INSERT INTO `kategoria` (`kategoria_id`, `nazwa`, `img_id`) VALUES
 -- Struktura tabeli dla tabeli `konta`
 --
 
+DROP TABLE IF EXISTS `konta`;
 CREATE TABLE `konta` (
   `konto_id` int(11) NOT NULL,
   `nazwa` varchar(100) NOT NULL,
@@ -80,12 +87,8 @@ CREATE TABLE `konta` (
 --
 
 INSERT INTO `konta` (`konto_id`, `nazwa`, `email`, `haslo`, `admin`) VALUES
-(1, 'greg', 'g@mail.com', '123', 1),
-(10, 'jhon', '', '', 0),
-(11, '', '', '', 0),
-(12, 'lebron', 'lebron@mail.com', '123', 0),
-(13, 'joe', 'mai@g.co', 'biden', 0),
-(14, 'test', 'a@m.c', '123', 0);
+(1, 'greg', 'g@mail.com', '$2y$10$db1GGBnfmrZ5vionq3210uWdht80cmPqEsX79HFbeNgctFerP3HdK', 1),
+(17, 'the bronze way', 'w@g', '$2y$10$nFyWA8r0TfS0Fd4DP4pY3u1vInK7iNgQ8dicNy//BMvao8IVdvhdG', 0);
 
 -- --------------------------------------------------------
 
@@ -93,6 +96,7 @@ INSERT INTO `konta` (`konto_id`, `nazwa`, `email`, `haslo`, `admin`) VALUES
 -- Struktura tabeli dla tabeli `koszyk`
 --
 
+DROP TABLE IF EXISTS `koszyk`;
 CREATE TABLE `koszyk` (
   `ilosc` int(11) NOT NULL,
   `konto_id` int(11) NOT NULL,
@@ -105,17 +109,9 @@ CREATE TABLE `koszyk` (
 --
 
 INSERT INTO `koszyk` (`ilosc`, `konto_id`, `produkt_id`, `main`) VALUES
-(2, 10, 2, 2),
-(1, 1, 2, 7),
-(4, 12, 2, 8),
-(2, 12, 4, 9),
-(2, 1, 4, 10),
-(1, 1, 2, 11),
-(1, 1, 4, 12),
-(3, 1, 2, 13),
-(1, 1, 2, 14),
-(1, 1, 4, 15),
-(10, 1, 2, 16);
+(3, 1, 2, 17),
+(5, 17, 2, 18),
+(2, 17, 4, 19);
 
 -- --------------------------------------------------------
 
@@ -123,6 +119,7 @@ INSERT INTO `koszyk` (`ilosc`, `konto_id`, `produkt_id`, `main`) VALUES
 -- Struktura tabeli dla tabeli `produkt`
 --
 
+DROP TABLE IF EXISTS `produkt`;
 CREATE TABLE `produkt` (
   `produkt_id` int(11) NOT NULL,
   `nazwa` varchar(100) NOT NULL,
@@ -140,12 +137,15 @@ CREATE TABLE `produkt` (
 --
 
 INSERT INTO `produkt` (`produkt_id`, `nazwa`, `cena`, `cala_cena`, `ilosc`, `img_id`, `promocja`, `opis`, `kategoria_id`) VALUES
-(2, 'testowy produkt', '10.20', '9.18', 2135, NULL, '10', 'spunk', 1),
-(4, 'krzesło drewniane', '2137.00', '2137.00', 5, 6, '0', 'to jest krzesło zrobione z drewna', 1);
+(2, 'sofa', '10.20', '9.18', 2133, NULL, '10', 'spunk', 1),
+(4, 'krzesło drewniane', '2137.00', '2137.00', 3, 6, '0', 'to jest krzesło zrobione z drewna', 1),
+(5, 'stół kuchennny', '1000.00', '0.00', 10, NULL, '0', 'stól do kuchni', 1),
+(6, 'kwiatek', '5.00', '0.00', 100, NULL, '0', 'jest to 1 kiwatek który wygląda stosunkowo dobrze', 2);
 
 --
 -- Wyzwalacze `produkt`
 --
+DROP TRIGGER IF EXISTS `cena i promocja`;
 DELIMITER $$
 CREATE TRIGGER `cena i promocja` BEFORE UPDATE ON `produkt` FOR EACH ROW BEGIN
 IF (new.cena != old.cena) OR (new.promocja != old.promocja)THEN SET new.cala_cena = new.cena - ((new.promocja/100)*new.cena);
@@ -160,6 +160,7 @@ DELIMITER ;
 -- Struktura tabeli dla tabeli `zamuwienia`
 --
 
+DROP TABLE IF EXISTS `zamuwienia`;
 CREATE TABLE `zamuwienia` (
   `zamuwienie_id` int(11) NOT NULL,
   `produkt_id` int(11) NOT NULL,
@@ -172,16 +173,8 @@ CREATE TABLE `zamuwienia` (
 --
 
 INSERT INTO `zamuwienia` (`zamuwienie_id`, `produkt_id`, `ilosc`, `main`) VALUES
-(9, 2, 3, 5),
-(9, 4, 2, 6),
-(11, 2, 1, 7),
-(11, 4, 1, 8),
-(13, 2, 3, 9),
-(14, 2, 3, 10),
-(14, 4, 1, 11),
-(15, 2, 10, 12),
-(16, 2, 2, 13),
-(16, 4, 1, 14);
+(18, 2, 2, 15),
+(18, 4, 2, 16);
 
 -- --------------------------------------------------------
 
@@ -189,6 +182,7 @@ INSERT INTO `zamuwienia` (`zamuwienie_id`, `produkt_id`, `ilosc`, `main`) VALUES
 -- Struktura tabeli dla tabeli `zamuwienie`
 --
 
+DROP TABLE IF EXISTS `zamuwienie`;
 CREATE TABLE `zamuwienie` (
   `zamuwienie_id` int(11) NOT NULL,
   `konto_id` int(11) NOT NULL,
@@ -209,7 +203,8 @@ INSERT INTO `zamuwienie` (`zamuwienie_id`, `konto_id`, `imie`, `adres`, `metoda_
 (13, 1, 'qwe', 'swe', 'przelew', 'paczkomat', 'przygotowywany'),
 (14, 1, 'gregory', 'lebron', 'przelew', 'kurier', 'przygotowywany'),
 (15, 1, 'lebron', 'jhames', 'przelew', 'paczkomat', 'przygotowywany'),
-(16, 12, 'lebronJames', 'lebron way', 'karta', 'kurier', 'przygotowywany');
+(17, 17, 'lebron', 'lebron way', 'karta', 'teleporter', 'przygotowywany'),
+(18, 17, 'lebron', 'lebron way', 'karta', 'teleporter', 'przygotowywany');
 
 --
 -- Indeksy dla zrzutów tabel
@@ -280,37 +275,37 @@ ALTER TABLE `img`
 -- AUTO_INCREMENT dla tabeli `kategoria`
 --
 ALTER TABLE `kategoria`
-  MODIFY `kategoria_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `kategoria_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT dla tabeli `konta`
 --
 ALTER TABLE `konta`
-  MODIFY `konto_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `konto_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT dla tabeli `koszyk`
 --
 ALTER TABLE `koszyk`
-  MODIFY `main` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `main` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT dla tabeli `produkt`
 --
 ALTER TABLE `produkt`
-  MODIFY `produkt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `produkt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT dla tabeli `zamuwienia`
 --
 ALTER TABLE `zamuwienia`
-  MODIFY `main` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `main` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT dla tabeli `zamuwienie`
 --
 ALTER TABLE `zamuwienie`
-  MODIFY `zamuwienie_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `zamuwienie_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Ograniczenia dla zrzutów tabel
