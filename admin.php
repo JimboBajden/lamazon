@@ -47,20 +47,20 @@
     #ilosc
         if(isset($_POST["zprodukt"])){
             if($_POST["ilosc"]!= ""){
-                $update = "UPDATE `produkt` SET `ilosc` = {$_POST["ilosc"]} WHERE `produkt`.`produkt_id` = {$_POST["zprodukt"]} ";
+                $update = "UPDATE `produkt` SET `ilosc` = '{$_POST["ilosc"]}' WHERE `produkt`.`produkt_id` = {$_POST["zprodukt"]} ";
                 $connect->query($update);
             }
             if($_POST["promocja"]!= ""){
                 echo"sperma";
-                $update = "UPDATE `produkt` SET `promocja` = {$_POST["promocja"]} WHERE `produkt`.`produkt_id` = {$_POST["zprodukt"]} ";
+                $update = "UPDATE `produkt` SET `promocja` = '{$_POST["promocja"]}' WHERE `produkt`.`produkt_id` = {$_POST["zprodukt"]} ";
                 $connect->query($update);
             }
             if($_POST["nazwa"]!= ""){
-                $update = "UPDATE `produkt` SET `nazwa` = {$_POST["nazwa"]} WHERE `produkt`.`produkt_id` = {$_POST["zprodukt"]} ";
+                $update = "UPDATE `produkt` SET `nazwa` = '{$_POST["nazwa"]}' WHERE `produkt`.`produkt_id` = {$_POST["zprodukt"]} ";
                 $connect->query($update);
             }
             if($_POST["cena"]!= ""){
-                $update = "UPDATE `produkt` SET `cena` = {$_POST["cena"]} WHERE `produkt`.`produkt_id` = {$_POST["zprodukt"]} ";
+                $update = "UPDATE `produkt` SET `cena` = '{$_POST["cena"]}' WHERE `produkt`.`produkt_id` = {$_POST["zprodukt"]} ";
                 $connect->query($update);
             }
             if($_POST["opis"] != ""){
@@ -78,7 +78,6 @@ $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
 $uploadOk = 1;
 $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 
-// Check if image file is a actual image or fake image
 if(isset($_POST["submit"])) {
     $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
     if($check !== false) {
@@ -89,8 +88,6 @@ if(isset($_POST["submit"])) {
         $uploadOk = 0;
     }
     }
-
-    // Check if file already exists
     if (file_exists($target_file)) {
         echo '<script>alert("Sorry, file already exists.")</script>';
         
@@ -98,17 +95,14 @@ if(isset($_POST["submit"])) {
     }
 
 
-    // Allow certain file formats
     if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
         && $imageFileType != "gif" ) {
         echo '<script>alert("Sorry, only JPG, JPEG, PNG & GIF files are allowed.")</script>';
         $uploadOk = 0;
     }
 
-    // Check if $uploadOk is set to 0 by an error
     if ($uploadOk == 0) {
     echo '<script>alert("Sorry, your file was not uploaded.")</script>'; 
-    // if everything is ok, try to upload file
     } else {
     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
         $dodawanieUrl= "INSERT INTO `img` (`url`) VALUES ('{$_FILES["fileToUpload"]["name"]}')";

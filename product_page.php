@@ -73,8 +73,9 @@
                         </div>
                         <form action="" method="post">
                             <input type="hidden" name="id" value=" <?php echo $row["produkt_id"] ?>">
-                            <input type="number" name="ilosc" min="1" value="1" max = <?php echo $row["ilosc"]; ?>>
-                            <input type="submit" value="dodaj do koszyka">    
+                            <p>dostępna ilośc: <?php echo $row["ilosc"]; ?></p>
+                            <input type="number" name="ilosc" min="1" value= <?php if($row["ilosc"] == 0){echo $row["ilosc"];}else{echo "1";} ?> max = <?php echo $row["ilosc"];?>>
+                            <input type="submit" <?php   if($row["ilosc"] == 0){echo "disabled "; echo "value='niedostempne' ";}else{echo "value = 'dodaj do koszyka'";} ?>>    
                         </form>
                     </div>
             </div>

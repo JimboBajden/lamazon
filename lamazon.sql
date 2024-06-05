@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 05 Cze 2024, 08:34
+-- Czas generowania: 05 Cze 2024, 21:48
 -- Wersja serwera: 10.4.25-MariaDB
 -- Wersja PHP: 8.1.10
 
@@ -43,7 +43,22 @@ INSERT INTO `img` (`img_id`, `url`) VALUES
 (2, 'dom_kategoria.jpg'),
 (5, 'temp_img.jpg\r\n'),
 (6, 'krzesło_drewniane.jpg'),
-(7, 'dom_kategoria.jpg');
+(7, 'dom_kategoria.jpg'),
+(8, 'audi.jpg'),
+(9, 'ogórd.jpg'),
+(10, 'skakanka.jpg'),
+(11, 'ziemia.jpg'),
+(12, 'ziemniak.jpg'),
+(13, 'kuchenka_gazowa.jpg'),
+(14, 'toster.jpg'),
+(15, 'koń.jpg'),
+(16, 'kamien.jpg'),
+(17, 'grabki.jpg'),
+(18, 'drzewo.jpg'),
+(19, 'kwiatek.jpg'),
+(20, 'stółkuchenny.jpg'),
+(21, 'sofa.jpg'),
+(22, 'hobby.jpg');
 
 -- --------------------------------------------------------
 
@@ -64,8 +79,8 @@ CREATE TABLE `kategoria` (
 
 INSERT INTO `kategoria` (`kategoria_id`, `nazwa`, `img_id`) VALUES
 (1, 'dom', 2),
-(2, 'ogród', NULL),
-(3, 'hobby', NULL);
+(2, 'ogród', 9),
+(3, 'hobby', 22);
 
 -- --------------------------------------------------------
 
@@ -109,9 +124,11 @@ CREATE TABLE `koszyk` (
 --
 
 INSERT INTO `koszyk` (`ilosc`, `konto_id`, `produkt_id`, `main`) VALUES
-(3, 1, 2, 17),
-(5, 17, 2, 18),
-(2, 17, 4, 19);
+(5, 1, 2, 26),
+(4, 1, 14, 27),
+(2, 1, 10, 28),
+(4, 1, 2, 29),
+(2, 1, 10, 30);
 
 -- --------------------------------------------------------
 
@@ -137,10 +154,21 @@ CREATE TABLE `produkt` (
 --
 
 INSERT INTO `produkt` (`produkt_id`, `nazwa`, `cena`, `cala_cena`, `ilosc`, `img_id`, `promocja`, `opis`, `kategoria_id`) VALUES
-(2, 'sofa', '10.20', '9.18', 2133, NULL, '10', 'spunk', 1),
+(2, 'sofa', '10.20', '9.18', 1998, 21, '10', 'spunk', 1),
 (4, 'krzesło drewniane', '2137.00', '2137.00', 3, 6, '0', 'to jest krzesło zrobione z drewna', 1),
-(5, 'stół kuchennny', '1000.00', '0.00', 10, NULL, '0', 'stól do kuchni', 1),
-(6, 'kwiatek', '5.00', '0.00', 100, NULL, '0', 'jest to 1 kiwatek który wygląda stosunkowo dobrze', 2);
+(5, 'stół kuchennny', '1000.00', '1000.00', 10, 20, '0', 'stól do kuchni', 1),
+(6, 'kwiatek', '5.00', '5.00', 100, 19, '0', 'jest to 1 kiwatek który wygląda stosunkowo dobrze', 2),
+(7, 'drzewo', '211.00', '211.00', 100, 18, '0', 'to jest drzewo ', 2),
+(8, 'grabki', '2.00', '2.00', 5, 17, '0', 'grabią ', 2),
+(9, 'kamień', '1.00', '1.00', 100, 16, '0', 'to jest kamien do rekreacji', 3),
+(10, 'koń', '1820.00', '1820.00', 198, 15, '0', 'wielenda', 3),
+(11, 'tomasz', '10.00', '10.00', 0, NULL, '0', 'zgodził sie na to', 3),
+(12, 'toster', '100.00', '100.00', 96, 14, '0', 'tosty robi', 1),
+(13, 'kuchenka gazowa', '260.00', '260.00', 10, 13, '0', 'sehr gut schweis', 1),
+(14, 'ziemianki', '1.00', '1.00', 96, 12, '0', 'ciekawie wyglądające ziemniaki', 2),
+(15, 'ziemia', '100.00', '100.00', 1000, 11, '0', 'jest to kg ziemi', 2),
+(16, 'audi 80', '1000.00', '1000.00', 1, 8, '0', 'nie działa. ładnie wygląda. można naprawić', 3),
+(17, 'skakanka', '12.50', '12.50', 100, 10, '0', 'możesz skakać', 3);
 
 --
 -- Wyzwalacze `produkt`
@@ -174,7 +202,11 @@ CREATE TABLE `zamuwienia` (
 
 INSERT INTO `zamuwienia` (`zamuwienie_id`, `produkt_id`, `ilosc`, `main`) VALUES
 (18, 2, 2, 15),
-(18, 4, 2, 16);
+(18, 4, 2, 16),
+(20, 12, 4, 17),
+(23, 2, 2, 18),
+(23, 14, 4, 19),
+(23, 10, 2, 20);
 
 -- --------------------------------------------------------
 
@@ -198,13 +230,9 @@ CREATE TABLE `zamuwienie` (
 --
 
 INSERT INTO `zamuwienie` (`zamuwienie_id`, `konto_id`, `imie`, `adres`, `metoda_platnosci`, `metoda_dostawy`, `status`) VALUES
-(9, 1, 'imie', 'miejsce', 'przelew', 'paczkomat', 'przygotowywany'),
-(11, 1, 'lebron', 'the fifth', 'karta', 'teleporter', 'przygotowywany'),
-(13, 1, 'qwe', 'swe', 'przelew', 'paczkomat', 'przygotowywany'),
-(14, 1, 'gregory', 'lebron', 'przelew', 'kurier', 'przygotowywany'),
-(15, 1, 'lebron', 'jhames', 'przelew', 'paczkomat', 'przygotowywany'),
-(17, 17, 'lebron', 'lebron way', 'karta', 'teleporter', 'przygotowywany'),
-(18, 17, 'lebron', 'lebron way', 'karta', 'teleporter', 'przygotowywany');
+(18, 17, 'lebron', 'lebron way', 'karta', 'teleporter', 'przygotowywany'),
+(20, 1, 'greg', 'miejsce 2', 'przelew', 'paczkomat', 'przygotowywany'),
+(23, 1, 'gorge ', 'tak', 'przelew', 'teleporter', 'przygotowywany');
 
 --
 -- Indeksy dla zrzutów tabel
@@ -269,7 +297,7 @@ ALTER TABLE `zamuwienie`
 -- AUTO_INCREMENT dla tabeli `img`
 --
 ALTER TABLE `img`
-  MODIFY `img_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `img_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT dla tabeli `kategoria`
@@ -287,25 +315,25 @@ ALTER TABLE `konta`
 -- AUTO_INCREMENT dla tabeli `koszyk`
 --
 ALTER TABLE `koszyk`
-  MODIFY `main` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `main` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT dla tabeli `produkt`
 --
 ALTER TABLE `produkt`
-  MODIFY `produkt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `produkt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT dla tabeli `zamuwienia`
 --
 ALTER TABLE `zamuwienia`
-  MODIFY `main` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `main` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT dla tabeli `zamuwienie`
 --
 ALTER TABLE `zamuwienie`
-  MODIFY `zamuwienie_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `zamuwienie_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- Ograniczenia dla zrzutów tabel

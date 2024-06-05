@@ -80,9 +80,10 @@
             }else{
                 echo "<span class='grid-item'>dostarczone</span>";
             }
-            $sql = "SELECT SUM(produkt.cala_cena) AS wynik FROM `zamuwienia` JOIN produkt USING(produkt_id) WHERE zamuwienie_id =  {$row["zamuwienie_id"]} ";
-            $cena = $connect->query($sql)->fetch_assoc();
-            echo "<span class='grid-item'>cena: {$cena["wynik"]}</span>";
+            $sql = "SELECT SUM(produkt.cala_cena*zamuwienia.ilosc) as wynik FROM `zamuwienia` JOIN produkt USING(produkt_id) WHERE zamuwienie_id = {$row["zamuwienie_id"]}; ";
+            $wynik = $connect->query($sql)->fetch_assoc();
+            $cena = $wynik["wynik"];
+            echo "<span class='grid-item'>cena: {$cena}</span>";
             
             echo"</form>";
 

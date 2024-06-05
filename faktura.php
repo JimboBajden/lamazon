@@ -36,7 +36,7 @@
             <p id="net"> wartość netto [zł]</p>>
         </div>
         <?php
-        $sql = "SELECT * FROM `zamuwienia` JOIN produkt USING(produkt_id) WHERE zamuwienie_id = {$_GET["id"]}";
+        $sql = "SELECT produkt.nazwa AS 'nazwa' , zamuwienia.ilosc as 'ilosc' , produkt.cala_cena AS 'cala_cena'  FROM `zamuwienia` JOIN produkt USING(produkt_id) WHERE zamuwienie_id = {$_GET["id"]}";
         $count = 1;
         $suma = 0;
         $query = $connect->query($sql);

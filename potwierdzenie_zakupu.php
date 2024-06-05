@@ -10,6 +10,14 @@
     <?php
         session_start();
         $connect=@new mysqli('localhost','root','','lamazon');
+        if(isset($_SESSION["user"])){
+            $sql = "SELECT COUNT(*) as wynik FROM koszyk where konto_id = '{$_SESSION["user"]}' ";
+            $check = $connect->query($sql)->fetch_assoc();
+            if($check["wynik"] == 0){
+                header('Location: landing_page.php');    
+            }
+        }
+        
     ?>  
     <center><h1>wybierz metode płatności</h1></center>
     <center>

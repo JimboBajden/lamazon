@@ -11,7 +11,6 @@
 <?php 
     $connect=@new mysqli('localhost','root','','lamazon');
     session_start();
-    print_r($_SESSION);
     
 ?>
 <body>
